@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>myMovies Xpress! - Login</title>
+	<link rel="stylesheet" type="text/css" href="http://139.62.210.181/~km422950/css/mySite.css">
+	<script src="http://139.62.210.181/~km422950/project4/script.js"></script>
+</head>
+
+<body>
+	<h1>myMovies Xpress!</h1>
+	<p style="color: red;">
+		<?= $message ?>
+	</p>
+	<!-- DO NOT REMOVE OR MODIFY THE CODE OR PLACE YOUR CODE ABOVE THIS LINE -->
+	<p>Please login with your username and password</p>
+	<form action="http://139.62.210.181/~km422950/project4/logon.php" method="post">
+		<div class="p4-fields">
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username" required>
+
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" required>
+			<div class="p4-logon-btn">
+				<button type="reset">clear</button>
+				<div></div>
+				<button type="submit">Login</button>
+			</div>
+		</div>
+		<input type="hidden" name="action" value="login" />
+	</form>
+	<br>
+	<a href="http://139.62.210.181/~km422950/project4/logon.php?form=create">Create Account</a>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="http://139.62.210.181/~km422950/project4/logon.php?form=forgot">Forgot Password</a>
+	<br><br>
+	<a href="http://139.62.210.181/~km422950/index.html">ePortfolio</a>
+	<!-- DO NOT REMOVE OR MODIFY THE CODE OR PLACE YOUR CODE BELOW THIS LINE -->
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Processing</title>
+
+    <link rel="stylesheet" href="../css/mySite.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+    <h2 class="p2-header">Enter Payment Information</h2>
+    <div class="p2-cc-images">
+        <img src="./images/AmEx.png" alt="American Express">
+        <img src="./images/Discover.png" alt="Discover">
+        <img src="./images/MasterCard.png" alt="Master Card">
+        <img src="./images/Visa.png" alt="Visa Card">
+    </div>
+    <br>
+    <form onSubmit="return validateForm();">
+        <div class="p2-fields">
+            <label for="first">First Name:</label>
+            <input type="text" id="first" name="first" required>
+
+            <label for="last">Last Name:</label>
+            <input type="text" id="last" name="last" required>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="zip">Zip:</label>
+            <input type="text" id="zip" name="zip" required>
+
+            <label for="email">Email Address:</label>
+            <input type="text" id="email" name="email" required>
+
+            <label for="name">Name on Card:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="card">Card Number:</label>
+            <input type="text" id="card" name="card" required>
+
+            <label for="cvc"><a href="https://en.wikipedia.org/wiki/Card_security_code"
+                    target="_blank">CVV2/CVC:</a></label>
+            <input type="text" id="cvc" name="cvc" required>
+
+            <label for="state">State:</label>
+            <select name="state" id="state" required>
+                <option value="none" selected hidden>Select a State</option>
+                <option value="AL">Alabama</option>
+                <option value="AK">Alaska</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DE">Delaware</option>
+                <option value="DC">District Of Columbia</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option>
+                <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option>
+                <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option>
+                <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NY">New York</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VT">Vermont</option>
+                <option value="VA">Virginia</option>
+                <option value="WA">Washington</option>
+                <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WY">Wyoming</option>
+            </select>
+
+            <label for="expiry">Expiry:</label>
+            <input type="month" id="expiry" name="expiry" value="2021-05" min="2021-05" max="2025-12">
+        </div>
+        <br>
+        <button type="submit" class="p2-button" name="submit" id="submit">
+            <img src="./images/PayNow.png" id="dagger" />
+        </button>
+    </form>
+    <a href="../index.html">ePortfolio</a>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+
+    <link rel="stylesheet" href="../css/mySite.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+    <h2>Statistical Calculator</h2>
+    <p>Enter 5 to 20 numbers (ranging in value between 0 and 100).<br>
+        Exactly one (1) space must separate each number. </p>
+    <form onSubmit="return performStatistics();">
+        <textarea id="text-area" rows="2" cols="67" required>40 94 88 58 10 64 40 54 94 58</textarea>
+        <div class="p3-buttons">
+            <button type="reset">Reset</button>
+            <button type="submit">Submit</button>
+        </div>
+        <div class="p3-fields">
+
+            <label for="min">Min:</label>
+            <input type="text" id="min" name="min" readonly>
+
+            <label for="max">Max:</label>
+            <input type="text" id="max" name="max" readonly>
+
+            <label for="sum">Sum:</label>
+            <input type="text" id="sum" name="sum" readonly>
+
+            <label for="mean">Mean:</label>
+            <input type="text" id="mean" name="mean" readonly>
+
+            <label for="median">Median:</label>
+            <input type="text" id="median" name="median" readonly>
+
+            <label for="mode">Mode:</label>
+            <input type="text" id="mode" name="mode" readonly>
+
+            <label for="variance">Variance:</label>
+            <input type="text" id="variance" name="variance" readonly>
+
+            <label for="std-dev">Std.Dev:</label>
+            <input type="text" id="std-dev" name="std-dev" readonly>
+        </div>
+    </form>
+    <br>
+    <a href="../index.html">ePortfolio</a>
+</body>
+
+</html>

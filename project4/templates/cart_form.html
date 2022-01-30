@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>myMovies Xpress! - Cart</title>
+		<link rel="stylesheet" type="text/css" href="http://139.62.210.181/~km422950/css/mySite.css">
+		<script src="http://139.62.210.181/~km422950/project4/script.js"></script>
+	</head>
+	<body>
+		<h3>Welcome, <?= $_SESSION["displayName"] ?> (<a href="javascript: confirmLogout()">logout</a>)</h3>
+		<h1>myMovies Xpress!</h1>
+<!-- DO NOT REMOVE OR MODIFY THE CODE OR PLACE YOUR CODE ABOVE THIS LINE -->
+		<?php
+			if(!$count) {
+				echo '<p>Add some movie to your shopping cart</p>';
+				echo '<button type="button" class="add_movie" onclick="javascript: location.href=\'./search.php\'" >Add Movie</button>';
+			} else {
+				echo '<p>There are currently '.$count.' movies in your shopping cart</p>';
+		?>
+		<table id="p4-cart">
+			<tr>
+				<th>Poster</th>
+				<th>Title(Year)</th>
+				<th>More Info</th>
+				<th>Remove Movie</th>
+			</tr>
+			<?php
+				foreach($movies as $movieID){
+			 	$movieInfo = getMovieData($movieID);
+			?>
+			<tr>
+				<td><img style="height: 100px" src="<?= $movieInfo['Poster'] ?>"></td>
+				<td><a><?= $movieInfo["Title"]; ?><?= " (" ?><?= ($movieInfo["Year"]).")" ?></a></td>
+				<td><a href="javascript:void(0);" onclick="displayMovieInformation(<?= $movieID ?>)">View More Info</a></td>
+				<td style="text-align: center">
+
+						<a href="javascript: confirmRemove('<?= $movieInfo['Title'] ?>',<?= $movieID ?>)">X</a>
+
+				</td>
+			</tr>
+			<?php } ?>
+		</table>
+		<button type="button" class="add_movie" onclick="javascript:location.href='./search.php'" >Add Movie</button>
+		<button type="button" id="checkout" onclick="confirmCheckout()">Checkout</button>
+		<?php } ?>
+<!-- DO NOT REMOVE OR MODIFY THE CODE OR PLACE YOUR CODE BELOW THIS LINE -->
+		<!-- This code is used by the movieInfo.php file provided by the professor -->
+		<div id='modalWindow' class='modal'>
+			<div id='modalWindowContent' class='modal-content'>
+			</div>
+		</div>
+	</body>
+</html>

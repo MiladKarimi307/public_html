@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bouncing Balls</title>
+		<style>
+		</style>
+	</head>
+	<body>
+	<h2><span style="color: red">COP4813</span>: <span style="color: green">Having</span> <span style="color: blue">a</span> <span style="color: orange">Circle</span>!</h2>
+		<!-- CAUTION - Avoid changing the values and style of the HTML tags below - CAUTION -->
+		<div style="width: 1000px; float: left;">
+			<!-- The canvas is where the animation happens -->
+			<canvas id="container" height=600 width=1000 style="border: 1px solid;"></canvas>
+		</div>
+		<!-- This div holds the interface for the user to control the animation -->
+		<div id="interface" style="width: 325px; height: 590px; margin-left: 1020px; padding: 10px 0px 0px 10px; border: 1px solid;">
+			<!-- This div is for the Add a Ball radio button -->
+			<div style="width: 107px; float: left;">
+				<!-- Add a radio button to display the Add a Ball controls -->
+				<input type="radio" name="p5-radio" id="add" onclick="updateForm(this)" checked>
+				<label for="add">Add a Circle</label>
+			</div>
+			<!-- This div is for the Update a Ball radio button -->
+			<div style="width: 162px; margin-left: 142px;">
+				<!-- Add a radio button to display the Update a Ball controls -->
+				<input type="radio" name="p5-radio" id="update" onclick="updateForm(this)">
+				<label for="update">Update a Circle</label>
+			</div>
+			<br>
+			<!-- This div is for the Add a Ball controls -->
+			<div id="add_ball" style="display: block; height: 175px;">
+				<form action="">
+					<div style=" margin-top: 5px;">
+						<label for="add-name" style="font-weight: bolder;" >Name &nbsp;:</label>
+						<input type="text" id="add-name" size="30px">
+					</div>
+					<div style=" margin-top: 5px;">
+						<label for="add-radius" style="font-weight: bolder;">Radius:</label>
+						<input type="number" id="add-radius" size="5px" min="10" max="50">
+						<span>&nbsp;(10 to 50)</span>
+					</div>
+					<div style=" margin-top: 5px;">
+						<label for="add-speed" style="font-weight: bolder;">Speed &nbsp;:</label>
+						<input type="number" id="add-speed" size="5px" min="0" max="25">
+						<span>&nbsp;(0-Stop to 25-Super Fast)</span>
+					</div>
+					<input type="button" onclick="addBall()" value="Add Circle" style="margin-top: 5px; margin-left: 220px">
+				</form>
+			</div>
+			<!-- This div is for the Update a Ball controls -->
+			<div id="update_ball" style="display: none;  height: 175px;">
+				<!-- Add the Update a Ball controls here -->
+				<form action="">
+					<div style=" margin-top: 5px;">
+						<label for="select-circle" style="font-weight: bolder;" >Select Circle:</label>
+						<select id="select-circle" style="height: 23px; width: 150px;" onchange="updateSelection()">
+						</select>
+					</div>
+					<div style=" margin: 5px 0 0 37px;">
+						<label for="update-name" style="font-weight: bolder;" >Name &nbsp;:</label>
+						<input type="text" id="update-name" size="25px">
+					</div>
+					<div style=" margin: 5px 0 0 37px;">
+						<label for="update-radius" style="font-weight: bolder;">Radius:</label>
+						<input type="number" id="update-radius" size="5px" min="10" max="50">
+						<span>&nbsp;(10 to 50)</span>
+					</div>
+					<div style=" margin: 5px 0 0 37px;">
+						<label for="update-speed" style="font-weight: bolder;">Speed &nbsp;:</label>
+						<input type="number" id="update-speed" size="5px" min="0" max="25">
+						<span>(0-Stop, 25-Super Fast)</span>
+					</div>
+					<input type="button" onclick="updateBall()" value="Update Circle" style="margin-top: 5px; margin-left: 220px">
+				</form>
+			</div>
+			<!-- This div is for the Stop All Balls button -->
+			<div style="text-align: center;">
+				<!-- Add the Stop All Balls button here -->
+				<button onclick="stopAnimation()">Stop All Circles</button>
+			</div>
+			<div style="margin-top: 320px; margin-left: 120px; ">
+				<a href="../index.html" >ePortfolio</a>
+			</div>
+		</div>
+		<script>
+			class Ball {
+				color = 0; <!-- The current color based on the ball's direction -->
+				movingDown = true; <!-- Is ball moving towards the bottom of canvas -->
+				movingRight = true; <!-- Is ball moving towards the right of canvas -->
+				name = ""; <!-- The name assigned to the ball -->
+				radius = 0; <!-- The radius assigned to the ball -->
+				speed = 0; <!-- The speed assigned to the ball -->
+				xPos = 0; <!-- The current horizontal position of the ball -->
+				yPos = 0; <!-- The current vertical position of the ball -->
+				
+				<!-- Create an instance of the Ball class -->
+				constructor(name, radius, speed) {
+					this.name = name;
+					this.radius = parseInt(radius);
+					this.speed = parseInt(speed);
+					this.xPos = Math.floor(Math.random() * (MAX_WIDTH - radius * 2));
+					this.yPos = Math.floor(Math.random() * (MAX_HEIGHT - radius * 2));
+				}
+				
+				<!-- Getters and setters -->
+				get name() {
+					return this.name;
+				}
+				
+				get radius() {
+					return this.radius;
+				}
+				
+				get speed() {
+					return this.speed;
+				}
+				
+				set name(name) {
+					this.name = name;
+				}
+								
+				set radius(radius) {
+					this.radius = radius;
+				}
+				
+				set speed(speed) {
+					this.speed = speed;
+				}
+				
+				<!-- Determine if the ball's direction needs to change -->
+				<!-- This should prevent the ball from traveling beyond the canvas borders -->
+				checkForWallCollision() {
+					if(this.xPos >= (MAX_WIDTH - this.radius * 2))
+						this.movingRight = false;
+					if(this.xPos <= 0)
+						this.movingRight = true;
+					if(this.yPos >= (MAX_HEIGHT - this.radius * 2))
+						this.movingDown = false;
+					if(this.yPos <= 0)
+						this.movingDown = true;
+					this.updateColor();
+				}
+				
+				<!-- Draw the ball at its current position on the canvas -->
+				draw(canvas) {
+					this.checkForWallCollision();
+					this.updatePosition();
+					canvas.strokeStyle = this.color;
+					canvas.fillStyle = this.color;
+					canvas.beginPath();
+					canvas.arc(this.xPos + this.radius, this.yPos + this.radius, this.radius, 0, 2 * Math.PI);
+					canvas.fill();
+					canvas.stroke();
+					canvas.fillStyle = "white";
+					canvas.font = "bold 14pt Calibri";
+					canvas.fillText(this.name, this.xPos + this.radius - (this.name.length*5), this.yPos + this.radius + 5);
+				}
+				
+				<!-- Choose the ball's color based on its direction of travel -->
+				updateColor() {
+					if(this.movingDown && this.movingRight)
+						this.color = COLORS[0];
+					if(this.movingDown && !this.movingRight)
+						this.color = COLORS[1];
+					if(!this.movingDown && this.movingRight)
+						this.color = COLORS[2];
+					if(!this.movingDown && !this.movingRight)
+						this.color = COLORS[3];
+				}
+				
+				<!-- Update the ball's position based on its direction and speed -->
+				updatePosition() {
+					if(this.movingRight)
+						this.xPos += this.speed;
+					else
+						this.xPos -= this.speed;
+					if(this.movingDown)
+						this.yPos += this.speed;
+					else
+						this.yPos -= this.speed;
+				}
+			}
+
+			const BALLS = []; <!-- Array to hold the balls added to the canvas -->
+			const COLORS = ["red", "green", "blue", "yellow"];
+			const MAX_WIDTH = 1000; <!-- Width of the canvas defined in the HTML above -->
+			const MAX_HEIGHT = 600; <!-- Height of the canvas defined in the HTML above -->
+			<!-- Creates timer to automate the animation -->
+			<!-- The timer repeats every 10 milliseconds -->
+			const TIMER = setInterval(updateCanvas, 10, document.getElementById("container").getContext("2d"));
+			
+			updateAddBallForm(); <!-- Prefills data in the Add a Ball fields -->
+			
+			<!-- Creates a new ball and adds it to the BALLS array -->
+			function addBall() {
+				let n = document.getElementById("add-name").value;
+				let r = parseInt(document.getElementById("add-radius").value);
+				let s = parseInt(document.getElementById("add-speed").value);
+				if(r < 10 || r > 50) {
+					alert("Radius cannot be smaller than 10 or bigger than 50");
+					document.getElementById("update-radius").select();
+				} else if (s < 0 || s > 25) {
+					alert("Speed cannot be negative or bigger than 25");
+					document.getElementById("update-speed").select();
+				} else {
+					BALLS.push(new Ball(n,r,s));
+					updateSelectList();
+					updateAddBallForm();
+				}
+			}
+
+			<!-- Turns the timer off to stop the animation -->
+			function stopAnimation() {
+				clearInterval(TIMER);
+			}
+			
+			<!-- Prefills data in the Add a Ball fields -->
+			function updateAddBallForm() {
+				if(BALLS.length)
+					if(BALLS.length < 9)
+						document.getElementById("add-name").value = "0"+(BALLS.length+1);
+					else
+						document.getElementById("add-name").value = (BALLS.length+1)+"";
+				else
+					document.getElementById("add-name").value = "01";
+				document.getElementById("add-radius").value = 25;
+				document.getElementById("add-speed").value = 5;
+			}
+
+			<!-- Updates the selected ball with the data in the Update a Ball fields -->
+			function updateBall() {
+				let n = document.getElementById("update-name").value.toString();
+				let r = parseInt(document.getElementById("update-radius").value);
+				let s = parseInt(document.getElementById("update-speed").value);
+				if(r < 10 || r > 50) {
+					alert("Radius cannot be smaller than 10 or bigger than 50");
+					document.getElementById("update-radius").select();
+				} else if (s < 0 || s > 25) {
+					alert("Speed cannot be negative or bigger than 25");
+					document.getElementById("update-speed").select();
+				} else {
+					for (let ball of BALLS) {
+						if (ball.name === document.getElementById("select-circle").value) {
+							ball.name = n;
+							ball.radius = r;
+							ball.speed = s;
+							updateSelectList();
+							document.getElementById("select-circle").value = n;
+							break;
+						}
+					}
+				}
+			}
+			
+			<!-- Draws the next frame of animation on the canvas -->
+			function updateCanvas(canvas) {
+				canvas.clearRect(0, 0, MAX_WIDTH, MAX_HEIGHT);
+				for (let ball of BALLS)
+					ball.draw(canvas);
+			}
+
+			<!-- Display the fields of the the selected form: Add a Ball or Update a Ball -->			
+			function updateForm(control) {
+				if(control.id === "add"){
+					document.getElementById("update_ball").style.display = "none"
+					document.getElementById("add_ball").style.display = "block";
+				} else {
+					document.getElementById("add_ball").style.display = "none";
+					document.getElementById("update_ball").style.display = "block";
+					updateSelection();
+				}
+			}
+			
+			<!-- Display the data in the Update a Ball fields when a ball is selected -->			
+			function updateSelection() {
+				let n = document.getElementById("select-circle").value;
+				for (const ball of BALLS) {
+					if(ball.name === n){
+						document.getElementById("update-name").value = ball.name;
+						document.getElementById("update-radius").value = ball.radius;
+						document.getElementById("update-speed").value = ball.speed;
+						return;
+					}
+				}
+			}
+			
+			<!-- Update the Update a Ball drop-down list when a ball is added -->
+			function updateSelectList() {
+				document.getElementById("select-circle").textContent = null;
+				for (const ball of BALLS) {
+					let option = document.createElement("option");
+					option.text = ball.name;
+					document.getElementById("select-circle").appendChild(option);
+					option = null;
+				}
+			}
+		</script>
+	</body>
+</html>
